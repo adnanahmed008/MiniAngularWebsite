@@ -1,1 +1,11 @@
-<p>list-user works!</p>
+<div class="item user" [routerLink]="">
+    <div class="wrp-profile" [routerLink]="['/users',  user.username]">
+        <img src="../../../assets/images/profile-pic.png" />
+    </div>
+    <div>
+        <div>{{ user.name }}</div>
+        <div>{{ user.username }}</div>
+        <div *ngIf="user.lookingFor.length">{{ user.lookingFor.join(" | ") }}</div>
+        <div [routerLink]="['/home/edit-user', user.username]">Edit Profile</div>
+    </div>
+</div>

@@ -1,1 +1,8 @@
-<p>users works!</p>
+<div>
+    <button [routerLink]="['/home/add-user']" type="button" class="btn btn-primary">Add User</button>
+</div>
+
+<div class="list users m-3">
+    <app-list-user *ngFor="let userItem of users" [user]="userItem">
+    </app-list-user>
+</div>

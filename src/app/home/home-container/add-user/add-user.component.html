@@ -1,1 +1,72 @@
-<p>add-user works!</p>
+<div class="wrp-form-add-user">
+
+    <form [formGroup]="frmUser" (ngSubmit)="saveUser()">
+        <div>
+            <h2>Add User</h2>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Name" formControlName="name"
+                [ngClass]="{ 'is-invalid': f['name'].touched && f['name'].invalid }" />
+            <div *ngIf="f['name'] && f['name'].touched && f['name'].invalid">
+                <div *ngIf="f['name'].errors?.['required']">Required</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Username" formControlName="username"
+                [ngClass]="{ 'is-invalid': f['username'].touched && f['username'].invalid }" />
+            <div *ngIf="f['username'] && f['username'].touched && f['username'].invalid">
+                <div *ngIf="f['username'].errors?.['required']">Required</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="City" formControlName="city"
+                [ngClass]="{ 'is-invalid': f['city'].touched && f['city'].invalid }" />
+            <div *ngIf="f['city'] && f['city'].touched && f['city'].invalid">
+                <div *ngIf="f['city'].errors?.['required']">Required</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="State" formControlName="state"
+                [ngClass]="{ 'is-invalid': f['state'].touched && f['state'].invalid }" />
+            <div *ngIf="f['state'] && f['state'].touched && f['state'].invalid">
+                <div *ngIf="f['state'].errors?.['required']">Required</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Country" formControlName="country"
+                [ngClass]="{ 'is-invalid': f['country'].touched && f['country'].invalid }" />
+            <div *ngIf="f['country'] && f['country'].touched && f['country'].invalid">
+                <div *ngIf="f['country'].errors?.['required']">Required</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Profession" formControlName="profession"
+                [ngClass]="{ 'is-invalid': f['profession'].touched && f['profession'].invalid }" />
+            <div *ngIf="f['profession'] && f['profession'].touched && f['profession'].invalid">
+                <div *ngIf="f['profession'].errors?.['required']">Required</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" type="text" placeholder="Bio" formControlName="bio"
+                [ngClass]="{ 'is-invalid': f['bio'].touched && f['bio'].invalid }"></textarea>
+            <div *ngIf="f['bio'] && f['bio'].touched && f['bio'].invalid">
+                <div *ngIf="f['bio'].errors?.['required']">Required</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="University" formControlName="university" />
+        </div>
+        <div class="form-group">
+            <label class="form-label">You are looking for</label>
+            <div class="d-flex looking-for-options">
+                <div class="option me-2 p-2" *ngFor="let option of lookingFor"
+                    [ngClass]="{ 'selected': option.isChecked }" (click)="option.isChecked = !option.isChecked">{{
+                    option.label }}</div>
+            </div>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+
+</div>

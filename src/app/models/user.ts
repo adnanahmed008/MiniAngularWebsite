@@ -1,5 +1,4 @@
 export class User {
-    public id: number = 0;
     public name: string = "";
     public username: string = "";
     public city: string = "";

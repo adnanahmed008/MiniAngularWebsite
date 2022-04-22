@@ -1,0 +1,27 @@
+@import "~bootstrap/scss/bootstrap";
+
+:host {
+    .wrp-form-add-user {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+
+        form {
+            width: 40vw;
+        }
+
+        .looking-for-options {
+            .option {
+                transition: all ease-out 200ms;
+                border-radius: $border-radius;
+                border: $border-width solid $border-color;
+
+                &.selected {
+                    background-color: $indigo;
+                    color: white;
+                }
+            }
+        }
+    }
+}

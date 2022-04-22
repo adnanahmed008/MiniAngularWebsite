@@ -4,6 +4,7 @@ import { HomeContainerComponent } from './home-container/home-container.componen
 import { AddUserComponent } from './home-container/add-user/add-user.component';
 import { ListUserComponent } from './home-container/list-user/list-user.component';
 import { HomeRoutingModule } from './home-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -15,7 +16,11 @@ import { HomeRoutingModule } from './home-routing.module';
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    ReactiveFormsModule
+  ],
+  exports: [
+    ListUserComponent
   ]
 })
 export class HomeModule { }

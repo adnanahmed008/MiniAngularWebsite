@@ -8,12 +8,13 @@ import { UserStoreService } from 'src/app/services/user-store.service';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
-  private users: User[] = [];
+  public users: User[] = [];
 
 
   constructor(private srvUsers: UserStoreService) { }
 
   ngOnInit(): void {
+    this.getUsers();
   }
 
   getUsers () {
