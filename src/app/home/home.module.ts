@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HomeContainerComponent } from './home-container/home-container.component';
 import { AddUserComponent } from './home-container/add-user/add-user.component';
 import { ListUserComponent } from './home-container/list-user/list-user.component';
-import { HomeRoutingModule } from './home-container/home-routing.module';
+import { HomeRoutingModule } from './home-routing.module';
 
 
 
