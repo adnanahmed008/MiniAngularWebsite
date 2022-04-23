@@ -1,0 +1,24 @@
+@import "/src/styles.scss";
+
+:host {
+    .navbar {
+        background-color: $primary;
+        
+        .navbar-brand {
+            color: white;
+        }
+    }
+
+    .nav-item {
+        .nav-link {
+            color: rgb(230, 230, 230);
+            &.active {
+                color: white;
+                text-transform: uppercase;
+                .text {
+                    border-bottom: 2px solid white;
+                }
+            }
+        }
+    }
+}
