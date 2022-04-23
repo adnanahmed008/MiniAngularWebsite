@@ -1,0 +1,44 @@
+:host {
+    --photo-size: 120px;
+    --border-size: 4px;
+
+    &.no-border {
+        --border-size: 0px;
+
+        .wrp-profile {
+            border: unset;
+        }
+    }
+
+    &.move-over-top {
+        .wrp-profile {
+            margin-top: calc(-1 * var(--photo-size) * 0.8);
+        }
+    }
+
+    &.smaller {
+        --photo-size: 80px;
+    }
+    
+    .wrp-profile {
+        position: relative;
+        width: calc(var(--photo-size) + (var(--border-size) * 2));
+        height: calc(var(--photo-size) + (var(--border-size) * 2));
+        border-radius: 100%;
+        border: var(--border-size) solid white;
+        background: #ddd;
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: var(--photo-size);
+            height: var(--photo-size);
+            border-radius: inherit;
+
+            // &[src=""] {
+            //     display: none;
+            // }
+        }
+    }
+}

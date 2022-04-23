@@ -1,0 +1,28 @@
+@import "/src/styles.scss";
+
+:host {
+
+    .nav-tabs {
+        padding-bottom: 2px;
+        border: unset;
+
+        .nav-item {
+            .nav-link {
+                color: $gray-600;
+                border: unset;
+                padding: map-get($map: $spacers, $key: 2) map-get($map: $spacers, $key: 2);
+                margin-right: map-get($map: $spacers, $key: 2);
+
+                &:hover {
+                    border: unset;
+                }
+
+                &.active {
+                    border: unset;
+                    color: $color-link;
+                    border-bottom: 2px solid $color-link;
+                }
+            }
+        }
+    }
+}

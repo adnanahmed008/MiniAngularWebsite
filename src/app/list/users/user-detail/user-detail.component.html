@@ -1,1 +1,114 @@
-<app-list-user *ngIf="user" [user]="user"></app-list-user>
+<div class="section">
+    <div class="row">
+        <div class="col-12 p-5">
+
+            <div class="user-detail border rounded overflow-hidden" *ngIf="user">
+
+                <!-- Cover Image -->
+                <div class="wrp-cover">
+                    <img [src]="user.base64CoverImage" />
+                </div>
+
+                <div class="ps-4 pe-4 pb-4 border-bottom">
+
+                    <!-- Profile Picture -->
+                    <div class="wrp-profile mb-2">
+                        <app-profile-picture-thumbnail class="move-over-top" [base64]="user.base64ProfilePicture">
+                        </app-profile-picture-thumbnail>
+                    </div>
+
+                    <div class="d-flex ">
+                        <!-- Left Side -->
+                        <div class="col-7">
+
+                            <!-- Name -->
+                            <h3 class="fw-bold">{{ user.name }}</h3>
+
+                            <!-- Location -->
+                            <div class="profile-item d-flex align-items-center">
+                                <span class="fw-medium">{{ user.getLocation() }}</span>
+                                <fa-icon [icon]="faCircle" class="icon-circle-small m-2"></fa-icon>
+                                <span class="fw-medium color-gray">{{ user.profession }}</span>
+                            </div>
+
+                            <!-- Looking for -->
+                            <div class="profile-item">
+                                <span class="color-gray fw-light">Looking for: </span>
+                                <a href="#" *ngFor="let option of user.lookingFor, index as i">{{ option + (i ==
+                                    user.lookingFor.length - 1 ? "" : ", ") }}</a>
+                            </div>
+
+                            <!-- Bio -->
+                            <div class="profile-item">
+                                <a *ngIf="!user.bio.length" [routerLink]="['/home/edit-user', user.username]">Add
+                                    bio</a>
+                                {{ user.bio }}
+                            </div>
+
+                            <!-- Inline action buttons -->
+                            <div>
+                                <button type="button" class="btn btn-outline-primary btn-sm me-2"
+                                    [routerLink]="['/home/edit-user', user.username]">
+                                    Edit Profile
+                                    <fa-icon [icon]="faPencil"></fa-icon>
+                                </button>
+
+                                <button type="button" class="btn btn-primary btn-sm me-3">
+                                    Add to Profile
+                                </button>
+
+                                <button type="button" class="btn btn-transparent btn-sm me-4 color-dark-gray">
+                                    <fa-icon [icon]="faEllipsisVertical" class="icon-more"></fa-icon>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Side -->
+                        <div class="col-5">
+
+                            <!-- University -->
+                            <div class="profile-item icon-start">
+                                <div *ngIf="user.university.length; else addUniversity">
+                                    <fa-icon [icon]="faGraduationCap"></fa-icon>
+                                    <div class="text">
+                                        <span class="color-gray">Currently at </span>
+                                        <a href="#">{{ user.university }}</a>
+                                    </div>
+                                </div>
+                                <ng-template #addUniversity>
+                                    <div class="text">
+                                        <a [routerLink]="['/home/edit-user', user.username]">Add University</a>
+                                    </div>
+                                </ng-template>
+                            </div>
+
+                            <div class="profile-item icon-start">
+                                <div class="text">
+                                    <a [routerLink]="['/home/edit-user', user.username]">Add Grade</a>
+                                </div>
+                            </div>
+
+                            <div class="profile-item icon-start">
+                                <div class="text">
+                                    <a [routerLink]="['/home/edit-user', user.username]">Add Language Qualification</a>
+                                </div>
+                            </div>
+
+                            <div class="profile-item icon-start">
+                                <div class="text">
+                                    <a [routerLink]="['/home/edit-user', user.username]">Add Accomplishment</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ps-3 pe-3">
+                    <app-tabs [tabs]="tabs"></app-tabs>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

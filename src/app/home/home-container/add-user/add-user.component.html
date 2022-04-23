@@ -1,61 +1,98 @@
-<div class="wrp-form-add-user">
+<div class="wrp-form-add-user p-3">
 
-    <form [formGroup]="frmUser" (ngSubmit)="saveUser()">
+    <form [formGroup]="frmUser" (ngSubmit)="onSubmit()">
         <div>
-            <h2>Add User</h2>
+            <h2>Create User</h2>
         </div>
+        <hr />
         <div class="form-group">
-            <input class="form-control" type="text" placeholder="Name" formControlName="name"
-                [ngClass]="{ 'is-invalid': f['name'].touched && f['name'].invalid }" />
-            <div *ngIf="f['name'] && f['name'].touched && f['name'].invalid">
-                <div *ngIf="f['name'].errors?.['required']">Required</div>
+            <div class="wrp-cover rounded border">
+                <img [src]="user.base64CoverImage" />
+                <button class="btn btn-light btn-add rounded-pill shadow-sm m-2" type="button"
+                    (click)="onAddCoverImage()">Add</button>
+                <input #fileCoverImage class="d-none" type="file" accept=".jpg, .jpeg, .png"
+                    (change)="onCoverSelection($event)" />
             </div>
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="Username" formControlName="username"
-                [ngClass]="{ 'is-invalid': f['username'].touched && f['username'].invalid }" />
-            <div *ngIf="f['username'] && f['username'].touched && f['username'].invalid">
-                <div *ngIf="f['username'].errors?.['required']">Required</div>
+            <div class="wrp-profile mb-2">
+                <app-profile-picture-thumbnail class="move-over-top" [base64]="user.base64ProfilePicture"
+                    (onLoad)="onProfilePictureLoad($event)"></app-profile-picture-thumbnail>
+                <button class="btn btn-light btn-add rounded-full shadow-sm" type="button"
+                    (click)="onAddProfilePicture()">A</button>
             </div>
+            <input #fileProfilePicture class="d-none" type="file" accept=".jpg, .jpeg, .png"
+                (change)="onProfilePictureSelection($event)" />
+            <div *ngIf="profilePictureAspectRatioError">Picture should be 1:1 in ratio</div>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="City" formControlName="city"
-                [ngClass]="{ 'is-invalid': f['city'].touched && f['city'].invalid }" />
-            <div *ngIf="f['city'] && f['city'].touched && f['city'].invalid">
-                <div *ngIf="f['city'].errors?.['required']">Required</div>
+        <div class="inline-form-elements">
+            <div class="form-group col-6">
+                <input class="form-control" type="text" placeholder="Name" formControlName="name"
+                    [ngClass]="{ 'is-invalid': formControls['name'].touched && formControls['name'].invalid }" />
+                <div *ngIf="formControls['name'] && formControls['name'].touched && formControls['name'].invalid">
+                    <div *ngIf="formControls['name'].errors?.['required']">Required</div>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="State" formControlName="state"
-                [ngClass]="{ 'is-invalid': f['state'].touched && f['state'].invalid }" />
-            <div *ngIf="f['state'] && f['state'].touched && f['state'].invalid">
-                <div *ngIf="f['state'].errors?.['required']">Required</div>
+
+            <div class="form-group col-6">
+                <input class="form-control" type="text" placeholder="Username" formControlName="username"
+                    [ngClass]="{ 'is-invalid': formControls['username'].touched && formControls['username'].invalid }" />
+                <div
+                    *ngIf="formControls['username'] && formControls['username'].touched && formControls['username'].invalid">
+                    <div *ngIf="formControls['username'].errors?.['required']">Required</div>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="Country" formControlName="country"
-                [ngClass]="{ 'is-invalid': f['country'].touched && f['country'].invalid }" />
-            <div *ngIf="f['country'] && f['country'].touched && f['country'].invalid">
-                <div *ngIf="f['country'].errors?.['required']">Required</div>
+
+            <div class="form-group col-6">
+                <input class="form-control" type="text" placeholder="City" formControlName="city"
+                    [ngClass]="{ 'is-invalid': formControls['city'].touched && formControls['city'].invalid }" />
+                <div *ngIf="formControls['city'] && formControls['city'].touched && formControls['city'].invalid">
+                    <div *ngIf="formControls['city'].errors?.['required']">Required</div>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="Profession" formControlName="profession"
-                [ngClass]="{ 'is-invalid': f['profession'].touched && f['profession'].invalid }" />
-            <div *ngIf="f['profession'] && f['profession'].touched && f['profession'].invalid">
-                <div *ngIf="f['profession'].errors?.['required']">Required</div>
+
+
+            <div class="form-group col-6">
+                <input class="form-control" type="text" placeholder="State" formControlName="state"
+                    [ngClass]="{ 'is-invalid': formControls['state'].touched && formControls['state'].invalid }" />
+                <div *ngIf="formControls['state'] && formControls['state'].touched && formControls['state'].invalid">
+                    <div *ngIf="formControls['state'].errors?.['required']">Required</div>
+                </div>
             </div>
+
+            <div class="form-group col-6">
+                <select class="form-select" aria-label="Default select example" formControlName="country"
+                    [ngClass]="{ 'is-invalid': formControls['country'].touched && formControls['country'].invalid }">
+                    <option>Select Country</option>
+                    <option *ngFor="let country of lstCountries" [value]="country.name">{{ country.name }}</option>
+                </select>
+                <div
+                    *ngIf="formControls['country'] && formControls['country'].touched && formControls['country'].invalid">
+                    <div *ngIf="formControls['country'].errors?.['required']">Required</div>
+                </div>
+            </div>
+
+            <div class="form-group col-6">
+                <input class="form-control" type="text" placeholder="Profession" formControlName="profession"
+                    [ngClass]="{ 'is-invalid': formControls['profession'].touched && formControls['profession'].invalid }" />
+                <div
+                    *ngIf="formControls['profession'] && formControls['profession'].touched && formControls['profession'].invalid">
+                    <div *ngIf="formControls['profession'].errors?.['required']">Required</div>
+                </div>
+            </div>
+
+            <div class="form-group col-12">
+                <input class="form-control" type="text" placeholder="University" formControlName="university" />
+            </div>
+
         </div>
+
         <div class="form-group">
             <textarea class="form-control" type="text" placeholder="Bio" formControlName="bio"
-                [ngClass]="{ 'is-invalid': f['bio'].touched && f['bio'].invalid }"></textarea>
-            <div *ngIf="f['bio'] && f['bio'].touched && f['bio'].invalid">
-                <div *ngIf="f['bio'].errors?.['required']">Required</div>
+                [ngClass]="{ 'is-invalid': formControls['bio'].touched && formControls['bio'].invalid }"></textarea>
+            <div *ngIf="formControls['bio'] && formControls['bio'].touched && formControls['bio'].invalid">
+                <div *ngIf="formControls['bio'].errors?.['required']">Required</div>
             </div>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="text" placeholder="University" formControlName="university" />
-        </div>
+
         <div class="form-group">
             <label class="form-label">You are looking for</label>
             <div class="d-flex looking-for-options">
@@ -64,8 +101,11 @@
                     option.label }}</div>
             </div>
         </div>
-        <div>
-            <button type="submit" class="btn btn-primary">Save</button>
+        <hr />
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-light" (click)="cancel()">Cancel</button>
+            <button type="submit" class="btn btn-primary"
+                [disabled]="!frmUser.valid || profilePictureAspectRatioError">Save</button>
         </div>
     </form>
 

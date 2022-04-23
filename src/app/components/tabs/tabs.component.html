@@ -1,0 +1,7 @@
+<ul class="nav nav-tabs">
+    <li class="nav-item" *ngFor="let tab of tabs" (click)="select(tab)">
+        <a class="nav-link fs-6" aria-current="page" [ngClass]="{ 'active': tab.isActive }">
+            {{ tab.label }}
+        </a>
+    </li>
+</ul>

@@ -1,1 +1,12 @@
-<p>home-container works!</p>
+<div>
+    <button type="button" class="btn btn-primary me-2" [routerLink]="['/users']">Users</button>
+    <button type="button" class="btn btn-primary" [routerLink]="['/home/add-user']">Create User</button>
+</div>
+
+<div class="list w-50 ms-auto me-auto users m-3">
+    <!-- No user view -->
+    <div class="alert alert-info" *ngIf="!users.length">No user found</div>
+
+    <!-- users list item -->
+    <app-list-user *ngFor="let user of users" [user]="user"></app-list-user>
+</div>

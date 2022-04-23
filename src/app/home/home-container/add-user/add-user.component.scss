@@ -3,12 +3,61 @@
 :host {
     .wrp-form-add-user {
         display: flex;
-        align-items: center;
         justify-content: center;
-        height: 100vh;
 
         form {
             width: 40vw;
+            border: $border-width solid $border-color;
+            padding: $spacer;
+        }
+
+        .wrp-cover {
+            position: relative;
+            height: 200px;
+            width: 100%;
+            overflow: hidden;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+
+            img {
+                width: inherit;
+                margin: auto 0;
+            }
+
+            .btn-add {
+                position: absolute;
+                top: 0;
+                right: 0;
+            }
+        }
+
+        .wrp-profile {
+            position: relative;
+            margin: 0 auto;
+            width: fit-content;
+
+            .btn-add {
+                position: absolute;
+                top: 0;
+                right: 0;
+            }
+        }
+
+        .inline-form-elements {
+            display: flex;
+            flex-wrap: wrap;
+
+            .form-group {
+                &.col-6 {
+                    &:nth-child(2n) {
+                        padding-left: map-get($map: $spacers, $key: 1);
+                    }
+                    &:nth-child(2n -1) {
+                        padding-right: map-get($map: $spacers, $key: 1);
+                    }
+                }
+            }
         }
 
         .looking-for-options {

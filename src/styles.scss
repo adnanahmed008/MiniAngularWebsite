@@ -1,20 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-
+$color-link: #2b68a0;
+$primary: $color-link;
 
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
-
-// #region | Forms |
-.form-group {
-    margin-bottom: $hr-margin-y;
-}
-// #endregion
-
-// #region | Lists |
-.list {
-    .item {
-        display: flex;
-        margin-bottom: $hr-margin-y;
-    }
-}
-// #endregion
+@import "~bootstrap/scss/bootstrap";
+@import "./assets/styles/styles.scss";

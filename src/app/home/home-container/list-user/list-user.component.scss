@@ -1,7 +1,11 @@
 :host {
     .wrp-profile {
-        width: 80px;
-        height: 80px;
+        // width: 80px;
+        // height: 80px;
+        // border-radius: 100%;
+        // overflow: hidden;
+        // cursor: pointer;
+        width: fit-content;
 
         img {
             width: inherit;

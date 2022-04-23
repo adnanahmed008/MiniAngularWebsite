@@ -18,7 +18,9 @@ export class UserStoreService {
   onInit() {
     this.srvStorage.getItem(this.$STORAGE_KEY)
       .then((users) => {
-        this.users = users as User[];
+        (users as User[]).forEach(x => {
+          this.users.push(new User().loadFrom(x));
+        })
       }).catch(() => { });
   }
 

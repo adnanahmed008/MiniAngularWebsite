@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EResponseCode } from 'src/app/enums/eresponse-code';
+import { ICountry } from 'src/app/Interfaces/icountry';
 import { ILookingOption } from 'src/app/Interfaces/ilooking-option';
 import { User } from 'src/app/models/user';
+import { CountryService } from 'src/app/services/country.service';
 import { UserStoreService } from 'src/app/services/user-store.service';
 import Swal from 'sweetalert2';
 
@@ -13,6 +15,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./add-user.component.scss']
 })
 export class AddUserComponent implements OnInit {
+  @ViewChild("fileCoverImage") fileCoverImage?: ElementRef<HTMLInputElement>;
+  @ViewChild("fileProfilePicture") fileProfilePicture?: ElementRef<HTMLInputElement>;
+
   // Using the same component for Create & Update operation
   public isEditMode: boolean = false;
 
@@ -27,8 +32,13 @@ export class AddUserComponent implements OnInit {
     { label: "Scholarships", isChecked: false }
   ];
 
+  public lstCountries: ICountry[] = [];
+
+  public profilePictureAspectRatioError: boolean = false;
+
   constructor(private formBuilder: FormBuilder,
     private srvUser: UserStoreService,
+    private srvCountry: CountryService,
     private router: Router,
     private route: ActivatedRoute) {
     const routeParams = this.route.snapshot.paramMap;
@@ -46,9 +56,14 @@ export class AddUserComponent implements OnInit {
       // this.setDefaultUserInformation();
     }
 
+    // Create user form validations
     this.frmUser = this.createUserForm();
+
+    // Load countries
+    this.lstCountries = this.srvCountry.get();
   }
 
+  // #region | Preparation |
   setDefaultUserInformation() {
     // I just hard coded to save some time.
     this.user.name = "Adnan Ahmed";
@@ -59,6 +74,17 @@ export class AddUserComponent implements OnInit {
     this.user.profession = "Full Stack Developer";
   }
 
+  loadUserFromStore() {
+    this.user = this.srvUser.getByUsername(this.userToEdit) as User;
+    if (this.user.lookingFor.length)
+      this.lookingFor.forEach(x => {
+        if (this.user.lookingFor.findIndex(y => y == x.label) > -1)
+          x.isChecked = true;
+      });
+  }
+  // #endregion
+
+  // #region | Form |
   createUserForm() {
     return this.formBuilder.group({
       name: new FormControl(this.user.name, [Validators.required]),
@@ -72,11 +98,12 @@ export class AddUserComponent implements OnInit {
     });
   }
 
-  get f(): { [key: string]: AbstractControl } {
+  get formControls(): { [key: string]: AbstractControl } {
     return this.frmUser.controls;
   }
 
-  saveUser() {
+  onSubmit() {
+    if (this.user.base64ProfilePicture.length && this.profilePictureAspectRatioError) return;
     if (!this.frmUser.valid) {
       this.frmUser.markAllAsTouched();
       // console.log(this.f.name?.dirty, this.name?.touched, this.name?.errors);
@@ -86,15 +113,15 @@ export class AddUserComponent implements OnInit {
     this.populateUserValues();
 
     if (this.isEditMode)
-      this.updateExistingUser();
+      this.updateUser();
     else
-      this.saveNewUser();
+      this.saveUser();
   }
 
-  updateExistingUser() {
+  updateUser() {
     this.srvUser.update(this.user)
       .then(code => {
-        this.router.navigate(['/users']);
+        this.router.navigate(['/home']);
       }).catch(code => {
         if (code == EResponseCode.NOT_FOUND) {
           Swal.fire({
@@ -105,10 +132,10 @@ export class AddUserComponent implements OnInit {
       });
   }
 
-  saveNewUser() {
+  saveUser() {
     this.srvUser.save(this.user)
       .then(code => {
-        this.router.navigate(['/users']);
+        this.router.navigate(['/home']);
       }).catch(code => {
         if (code == EResponseCode.ALREADY_EXISTS) {
           Swal.fire({
@@ -119,28 +146,82 @@ export class AddUserComponent implements OnInit {
       });
   }
 
-  populateUserValues() {
-    this.user.name = this.f["name"].value;
-    this.user.username = this.f["username"].value;
-    this.user.city = this.f["city"].value;
-    this.user.state = this.f["state"].value;
-    this.user.country = this.f["country"].value;
-    this.user.profession = this.f["profession"].value;
-    this.user.bio = this.f["bio"].value;
-    this.user.university = this.f["university"].value;
-    this.user.lookingFor = this.lookingFor.filter(x => x.isChecked).map(x => x.label);
+  cancel() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true
+    }).then((resp) => {
+      if (!resp.isConfirmed) return;
+
+      this.router.navigate(['/home']);
+    })
+      .catch(() => { });
+  }
+  // #endregion
+
+  // #region | Cover Image |
+  onAddCoverImage() {
+    this.fileCoverImage?.nativeElement.click();
   }
 
-  loadUserFromStore() {
-    this.user = this.srvUser.getByUsername(this.userToEdit) as User;
-    if (this.user.lookingFor.length)
-      this.lookingFor.forEach(x => {
-        if (this.user.lookingFor.findIndex(y => y == x.label) > -1)
-          x.isChecked = true;
-      });
+  onCoverSelection(e: Event) {
+    let file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.user.base64CoverImage = reader.result as string;
+    };
+  }
+  // #endregion
+
+
+  // #region | Profile Picture |
+  onAddProfilePicture() {
+    this.fileProfilePicture?.nativeElement.click();
+  }
+
+  onProfilePictureLoad(e: Event) {
+    let img = e.target as HTMLImageElement;
+    let tempImg = new Image();
+    tempImg.onload = (e) => {
+      console.log(tempImg.width, tempImg.height, tempImg.width == tempImg.height);
+      this.profilePictureAspectRatioError = !(tempImg.width == tempImg.height);
+    };
+
+    tempImg.src = img.src;
+  }
+
+  onProfilePictureSelection(e: Event) {
+    let file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.user.base64ProfilePicture = reader.result as string;
+    };
+  }
+  // #endregion
+
+  // #region | Helpers |
+  populateUserValues() {
+    this.user.name = this.formControls["name"].value;
+    this.user.username = this.formControls["username"].value;
+    this.user.city = this.formControls["city"].value;
+    this.user.state = this.formControls["state"].value;
+    this.user.country = this.formControls["country"].value;
+    this.user.profession = this.formControls["profession"].value;
+    this.user.bio = this.formControls["bio"].value;
+    this.user.university = this.formControls["university"].value;
+    this.user.lookingFor = this.lookingFor.filter(x => x.isChecked).map(x => x.label);
   }
 
   convertToLookingOption(label: string) {
     return <ILookingOption>{ isChecked: false, label };
   }
+  // #endregion
 }

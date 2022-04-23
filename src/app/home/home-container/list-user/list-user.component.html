@@ -1,11 +1,17 @@
-<div class="item user" [routerLink]="">
-    <div class="wrp-profile" [routerLink]="['/users',  user.username]">
-        <img src="../../../assets/images/profile-pic.png" />
+<div class="item user border rounded p-2" [routerLink]="['/users', user.username]">
+    <div class="wrp-profile me-3" [routerLink]="['/users',  user.username]">
+        <!-- <img src="{{ user.base64ProfilePicture || '../../../assets/images/profile-pic.png' }}" /> -->
+        <app-profile-picture-thumbnail class="smaller no-border" [base64]="user.base64ProfilePicture">
+        </app-profile-picture-thumbnail>
+    </div>
+    <div class="flex-fill">
+        <div>{{ user.name }}</div>
+        <div class="color-gray">@{{ user.username }}</div>
+        <div>{{ [user.city, user.state, user.country].join(", ") }}</div>
     </div>
     <div>
-        <div>{{ user.name }}</div>
-        <div>{{ user.username }}</div>
-        <div *ngIf="user.lookingFor.length">{{ user.lookingFor.join(" | ") }}</div>
-        <div [routerLink]="['/home/edit-user', user.username]">Edit Profile</div>
+        <button type="button" class="btn btn-link" [routerLink]="['/home/edit-user', user.username]">
+            Edit Profile
+        </button>
     </div>
 </div>

@@ -17,6 +17,9 @@ export class UsersComponent implements OnInit {
     this.getUsers();
   }
 
+  /**
+   * Get users from the store
+   */
   getUsers () {
     this.users = this.srvUsers.getAll();
   }
