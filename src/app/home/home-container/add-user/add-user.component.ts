@@ -74,6 +74,9 @@ export class AddUserComponent implements OnInit {
     this.user.profession = "Full Stack Developer";
   }
 
+  /**
+   * Loads user from store if the username is passed in params
+   */
   loadUserFromStore() {
     this.user = this.srvUser.getByUsername(this.userToEdit) as User;
     if (this.user.lookingFor.length)
@@ -98,10 +101,14 @@ export class AddUserComponent implements OnInit {
     });
   }
 
+  // Getter to access form controls
   get formControls(): { [key: string]: AbstractControl } {
     return this.frmUser.controls;
   }
 
+  /**
+   * On form submit action
+   */
   onSubmit() {
     if (this.user.base64ProfilePicture.length && this.profilePictureAspectRatioError) return;
     if (!this.frmUser.valid) {
@@ -118,6 +125,7 @@ export class AddUserComponent implements OnInit {
       this.saveUser();
   }
 
+  // In edit more, update user upon submit
   updateUser() {
     this.srvUser.update(this.user)
       .then(code => {
@@ -132,6 +140,7 @@ export class AddUserComponent implements OnInit {
       });
   }
 
+  // In new user case, Save user.
   saveUser() {
     this.srvUser.save(this.user)
       .then(code => {
@@ -146,6 +155,9 @@ export class AddUserComponent implements OnInit {
       });
   }
 
+  /**
+   * On form cancel action
+   */
   cancel() {
     Swal.fire({
       title: 'Are you sure?',
@@ -162,10 +174,16 @@ export class AddUserComponent implements OnInit {
   // #endregion
 
   // #region | Cover Image |
+  /**
+   * On click of add image
+   */
   onAddCoverImage() {
     this.fileCoverImage?.nativeElement.click();
   }
 
+  /**
+   * When cover image is selection
+   */
   onCoverSelection(e: Event) {
     let file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return;
@@ -180,21 +198,33 @@ export class AddUserComponent implements OnInit {
 
 
   // #region | Profile Picture |
+  /**
+   * On click of add image
+   */
   onAddProfilePicture() {
     this.fileProfilePicture?.nativeElement.click();
   }
 
+  /**
+   * When profile picture is loaded
+   */
   onProfilePictureLoad(e: Event) {
     let img = e.target as HTMLImageElement;
     let tempImg = new Image();
     tempImg.onload = (e) => {
       console.log(tempImg.width, tempImg.height, tempImg.width == tempImg.height);
       this.profilePictureAspectRatioError = !(tempImg.width == tempImg.height);
+
+      // To-Do
+      // Image resolution checking
     };
 
     tempImg.src = img.src;
   }
 
+  /**
+   * When profile picture is selected
+   */
   onProfilePictureSelection(e: Event) {
     let file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return;
@@ -208,6 +238,9 @@ export class AddUserComponent implements OnInit {
   // #endregion
 
   // #region | Helpers |
+  /**
+   * Populate user object values from form controls
+   */
   populateUserValues() {
     this.user.name = this.formControls["name"].value;
     this.user.username = this.formControls["username"].value;
@@ -220,6 +253,9 @@ export class AddUserComponent implements OnInit {
     this.user.lookingFor = this.lookingFor.filter(x => x.isChecked).map(x => x.label);
   }
 
+  /**
+   * Helper method to get Looking For object from string
+   */
   convertToLookingOption(label: string) {
     return <ILookingOption>{ isChecked: false, label };
   }

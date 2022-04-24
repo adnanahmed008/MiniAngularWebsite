@@ -1,11 +1,15 @@
 <div class="wrp-form-add-user p-3">
 
+    <!-- Main Form -->
     <form [formGroup]="frmUser" (ngSubmit)="onSubmit()">
         <div>
+            <!-- Heading -->
             <h2>Create User</h2>
         </div>
         <hr />
         <div class="form-group">
+
+            <!-- Cover Image -->
             <div class="wrp-cover rounded border">
                 <img [src]="user.base64CoverImage" />
                 <button class="btn btn-light btn-add rounded-pill shadow-sm m-2" type="button"
@@ -13,6 +17,8 @@
                 <input #fileCoverImage class="d-none" type="file" accept=".jpg, .jpeg, .png"
                     (change)="onCoverSelection($event)" />
             </div>
+
+            <!-- Profile Picture -->
             <div class="wrp-profile mb-2">
                 <app-profile-picture-thumbnail class="move-over-top" [base64]="user.base64ProfilePicture"
                     (onLoad)="onProfilePictureLoad($event)"></app-profile-picture-thumbnail>
@@ -23,7 +29,11 @@
                 (change)="onProfilePictureSelection($event)" />
             <div *ngIf="profilePictureAspectRatioError">Picture should be 1:1 in ratio</div>
         </div>
+
+        <!-- Inline Form Elements -->
         <div class="inline-form-elements">
+
+            <!-- Name -->
             <div class="form-group col-6">
                 <input class="form-control" type="text" placeholder="Name" formControlName="name"
                     [ngClass]="{ 'is-invalid': formControls['name'].touched && formControls['name'].invalid }" />
@@ -32,6 +42,7 @@
                 </div>
             </div>
 
+            <!-- Username -->
             <div class="form-group col-6">
                 <input class="form-control" type="text" placeholder="Username" formControlName="username"
                     [ngClass]="{ 'is-invalid': formControls['username'].touched && formControls['username'].invalid }" />
@@ -41,6 +52,7 @@
                 </div>
             </div>
 
+            <!-- City -->
             <div class="form-group col-6">
                 <input class="form-control" type="text" placeholder="City" formControlName="city"
                     [ngClass]="{ 'is-invalid': formControls['city'].touched && formControls['city'].invalid }" />
@@ -49,7 +61,7 @@
                 </div>
             </div>
 
-
+            <!-- State -->
             <div class="form-group col-6">
                 <input class="form-control" type="text" placeholder="State" formControlName="state"
                     [ngClass]="{ 'is-invalid': formControls['state'].touched && formControls['state'].invalid }" />
@@ -58,6 +70,7 @@
                 </div>
             </div>
 
+            <!-- Country -->
             <div class="form-group col-6">
                 <select class="form-select" aria-label="Default select example" formControlName="country"
                     [ngClass]="{ 'is-invalid': formControls['country'].touched && formControls['country'].invalid }">
@@ -70,6 +83,7 @@
                 </div>
             </div>
 
+            <!-- Profession -->
             <div class="form-group col-6">
                 <input class="form-control" type="text" placeholder="Profession" formControlName="profession"
                     [ngClass]="{ 'is-invalid': formControls['profession'].touched && formControls['profession'].invalid }" />
@@ -79,12 +93,14 @@
                 </div>
             </div>
 
+            <!-- University -->
             <div class="form-group col-12">
                 <input class="form-control" type="text" placeholder="University" formControlName="university" />
             </div>
 
         </div>
 
+        <!-- Bio -->
         <div class="form-group">
             <textarea class="form-control" type="text" placeholder="Bio" formControlName="bio"
                 [ngClass]="{ 'is-invalid': formControls['bio'].touched && formControls['bio'].invalid }"></textarea>
@@ -93,6 +109,7 @@
             </div>
         </div>
 
+        <!-- Looking for options -->
         <div class="form-group">
             <label class="form-label">You are looking for</label>
             <div class="d-flex looking-for-options">
@@ -102,6 +119,8 @@
             </div>
         </div>
         <hr />
+
+        <!-- Action Buttons -->
         <div class="d-flex justify-content-end">
             <button type="button" class="btn btn-light" (click)="cancel()">Cancel</button>
             <button type="submit" class="btn btn-primary"
